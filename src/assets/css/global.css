@@ -1,0 +1,13 @@
+:root {
+  --color-principal: #1A73E8;
+  --color-secundario: #E8F0FE;
+  --color-texto: #202124;
+  --fuente-principal: 'Poppins', sans-serif;
+}
+body {
+  font-family: var(--fuente-principal);
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-secundario);
+  color: var(--color-texto);
+}
