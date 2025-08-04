@@ -64,8 +64,6 @@ body {
   background-color: var(--color-secundario);
 }
 
-main{
-}
 
 .content {
   flex-grow: 1;
