@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +20,8 @@
           alt="Logo Estético Center" />
 
         <!-- Side bar cerrada -->
-        <img src="../assets/img/logo_Pequeño.ico" class="h-10 w-10 object-contain  h-10 transition-all duration-300 block lg:hidden" alt="Logo Pequeño" />
+        <img src="../assets/img/logo_Pequeño.ico"
+          class="h-10 w-10 object-contain  h-10 transition-all duration-300 block lg:hidden" alt="Logo Pequeño" />
 
       </div>
       <nav class="flex flex-col gap-4 w-full">
@@ -48,7 +50,8 @@
           <i data-lucide="inbox" class="w-5 h-5"></i><span class="hidden group-hover:inline">Soporte al cliente</span>
         </a>
         <a href="usuarios.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
-          <i data-lucide="book-user" class="w-5 h-5"></i><span class="hidden group-hover:inline">Gestion de usuarios</span>
+          <i data-lucide="book-user" class="w-5 h-5"></i><span class="hidden group-hover:inline">Gestion de
+            usuarios</span>
         </a>
         <a href="inicio-sesion.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="log-out" class="w-5 h-5"></i><span class="hidden group-hover:inline">Salir</span>
@@ -56,8 +59,129 @@
       </nav>
     </div>
   </aside>
+  <main class="ml-16 group-hover:ml-64 transition-all duration-300 p-6 flex-1">
+
+    <div class="flex justify-between items-center mb-6">
+      <input id="buscadorClientes" type="text" placeholder="Buscar por nombre o correo..."
+        class="border rounded p-2 w-80" aria-label="Buscar clientes por nombre o correo" />
+      <div class="flex items-center gap-2">
+
+        <button id="btnAbrirModal"
+          class="ml-4 flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-5 py-3 rounded shadow-lg font-semibold transition-shadow duration-300"
+          aria-haspopup="dialog" aria-controls="modalCliente">
+          <i data-lucide="plus"></i> Agregar Cliente
+        </button>
+      </div>
+    </div>
+
+    <table class="min-w-full bg-white rounded shadow overflow-hidden" role="grid" aria-label="Lista de clientes">
+      <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <tr>
+          <th class="px-6 py-3 text-left" scope="col">Nombre</th>
+          <th class="px-6 py-3 text-left" scope="col">Correo</th>
+          <th class="px-6 py-3 text-left" scope="col">Teléfono</th>
+          <th class="px-6 py-3 text-left" scope="col">Estado</th>
+          <th class="px-6 py-3 text-left" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaClientes" class="text-gray-600 text-sm font-light">
+      </tbody>
+    </table>
+
+    <div class="flex justify-center mt-4 gap-2" aria-label="Paginación">
+      <button id="btnPrev" class="px-4 py-2 rounded border disabled:opacity-50" disabled
+        aria-label="Página anterior">Anterior</button>
+      <span id="paginaActual" class="px-4 py-2 font-semibold select-none"></span>
+      <button id="btnNext" class="px-4 py-2 rounded border disabled:opacity-50" disabled
+        aria-label="Página siguiente">Siguiente</button>
+    </div>
+
+  </main>
+
+  <div id="modalCliente" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50"
+    role="dialog" aria-modal="true" aria-labelledby="modalTitulo" aria-describedby="modalDescripcion">
+    <div id="modalContent"
+      class="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg space-y-4 transition-all transform scale-100 animate-fade-in"
+      tabindex="-1">
+      <h2 id="modalTitulo" class="text-xl font-semibold mb-4">Agregar Cliente</h2>
+      <p id="modalDescripcion" class="sr-only">Formulario para agregar o editar cliente</p>
+
+      <div>
+        <label for="inputNombre" class="sr-only">Nombre completo</label>
+        <input id="inputNombre" type="text" placeholder="Nombre completo" class="p-2 border rounded w-full"
+          aria-describedby="errorNombre" />
+        <p id="errorNombre" class="text-red-600 text-sm mt-1 hidden" role="alert">El nombre debe tener al menos 3
+          caracteres.</p>
+      </div>
+
+      <div class="relative">
+        <label for="inputCorreo" class="sr-only">Correo electrónico</label>
+        <input id="inputCorreo" type="email" placeholder="Correo electrónico" class="p-2 border rounded w-full pr-8"
+          aria-describedby="errorCorreo" />
+        <span id="iconCorreo" class="absolute right-2 top-2 text-green-600 hidden" aria-hidden="true">
+          ✔️
+        </span>
+        <p id="errorCorreo" class="text-red-600 text-sm mt-1 hidden" role="alert">Correo inválido.</p>
+      </div>
+
+      <div>
+        <label for="inputTelefono" class="sr-only">Teléfono</label>
+        <input id="inputTelefono" type="text" placeholder="Teléfono (solo números)" class="p-2 border rounded w-full"
+          aria-describedby="errorTelefono" />
+        <p id="errorTelefono" class="text-red-600 text-sm mt-1 hidden" role="alert">Teléfono debe contener entre 8 y 15
+          dígitos numéricos.</p>
+      </div>
+
+      <div>
+        <label for="inputNacimiento" class="sr-only">Fecha de nacimiento</label>
+        <input id="inputNacimiento" type="date" placeholder="Fecha de nacimiento" class="p-2 border rounded w-full" />
+      </div>
+
+      <div>
+        <label for="inputDireccion" class="sr-only">Dirección</label>
+        <input id="inputDireccion" type="text" placeholder="Dirección" class="p-2 border rounded w-full" />
+      </div>
+
+      <div>
+        <label for="inputEstado" class="sr-only">Estado</label>
+        <select id="inputEstado" class="p-2 border rounded w-full" aria-describedby="errorEstado">
+          <option value="" disabled selected>Selecciona estado</option>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+        <p id="errorEstado" class="text-red-600 text-sm mt-1 hidden" role="alert">Debes seleccionar un estado válido.
+        </p>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-4">
+        <button id="btnCancelar" class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100 transition">
+          Cancelar
+        </button>
+        <button id="btnGuardar"
+          class="px-4 py-2 rounded bg-pink-600 hover:bg-pink-700 text-white font-semibold transition">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalConfirmacion" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50"
+    role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="bg-white rounded p-6 max-w-sm w-full text-center space-y-4">
+      <h3 id="confirmTitle" class="text-lg font-semibold">Confirmación</h3>
+      <p id="confirmMessage" class="text-gray-700"></p>
+      <div class="flex justify-center gap-4">
+        <button id="confirmNo" class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100">No</button>
+        <button id="confirmYes" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Sí</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-5 right-5 flex flex-col gap-3 z-50" aria-live="polite"
+    aria-atomic="true"></div>
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="../assets/js/clientes.js"></script>
 </body>
+
 </html>
