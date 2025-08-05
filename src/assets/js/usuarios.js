@@ -112,6 +112,17 @@ function abrirFormulario(usuario = null) {
     modal.showModal();
 }
 
+//Validacion del DUI
+document.getElementById("txtDuiUsuario").addEventListener("input", function () {
+    let valor = this.value.replace(/[^0-9]/g, ''); // Quita todo lo que no sea número
+
+    if (valor.length > 8) {
+        valor = valor.slice(0, 8) + '-' + valor.slice(8, 9); // Inserta el guion en la posición 9
+    }
+
+    this.value = valor;
+});
+
 
 //Guardar campos de editar y agregar
 document.getElementById("frmFormulario").addEventListener("submit", async e => {
@@ -138,6 +149,8 @@ document.getElementById("frmFormulario").addEventListener("submit", async e => {
         });
         return;
     }
+
+    
 
     const nuevoUsuario = {
         nombre,
