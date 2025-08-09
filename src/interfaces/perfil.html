@@ -12,7 +12,6 @@
 </head>
 
 <body class="bg-gray-100 flex">
-
   <aside
     class="bg-white w-16 hover:w-64 transition-all duration-300 h-screen shadow-md fixed z-10 overflow-hidden group">
     <div class="flex flex-col items-center group-hover:items-start p-4 space-y-8">
@@ -23,8 +22,7 @@
 
         <!-- Side bar cerrada -->
         <img src="../assets/img/logo_Pequeño.ico"
-          class="h-10 w-10 object-contain  h-10 transition-all duration-300 block lg:hidden" alt="Logo Pequeño" />
-
+          class="h-10 w-10 object-contain transition-all duration-300 block lg:hidden" alt="Logo Pequeño" />
       </div>
       <nav class="flex flex-col gap-4 w-full">
         <a href="dashboard.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
@@ -42,9 +40,6 @@
         <a href="facturacion.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="file-text" class="w-5 h-5"></i><span class="hidden group-hover:inline">Facturas</span>
         </a>
-        <a href="Horario.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
-          <i data-lucide="calendar-1" class="w-5 h-5"></i><span class="hidden group-hover:inline">Horario</span>
-        </a>
         <a href="perfil.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="settings" class="w-5 h-5"></i><span class="hidden group-hover:inline">Ajustes</span>
         </a>
@@ -52,83 +47,92 @@
           <i data-lucide="book-user" class="w-5 h-5"></i><span class="hidden group-hover:inline">Gestion de
             usuarios</span>
         </a>
-        <a href="inicio-sesion.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+        <a href="crear-cuenta.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="user-plus" class="w-5 h-5"></i><span class="hidden group-hover:inline">Crear cuenta</span>
+        </a>
+        <a href="#"  id="logoutBtn" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="log-out" class="w-5 h-5"></i><span class="hidden group-hover:inline">Salir</span>
         </a>
       </nav>
     </div>
   </aside>
 
+
   <main class="ml-16 group-hover:ml-64 transition-all duration-300 p-6 flex-1">
     <div class="maincss">
-    <div class="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
-      <h2 class="text-2xl font-bold text-center border-b pb-2">Configuración de Perfil</h2>
+      <div class="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+        <h2 class="text-2xl font-bold text-center border-b pb-2">Configuración de Perfil</h2>
 
-      <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Nombre -->
-        <div>
-          <label class="block text-sm font-medium mb-1">Nombre</label>
-          <input type="text" class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="Tu nombre">
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Nombre -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Nombre</label>
+            <input type="text"
+              class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="Tu nombre">
+          </div>
+
+          <!-- Apellido -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Apellido</label>
+            <input type="text"
+              class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="Tu apellido">
+          </div>
+
+          <!-- DUI -->
+          <div>
+            <label class="block text-sm font-medium mb-1">DUI</label>
+            <input type="text" maxlength="10"
+              class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="12345678-9">
+          </div>
+
+          <!-- Contraseña -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Contraseña</label>
+            <input type="password"
+              class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="Nueva contraseña">
+          </div>
+
+          <!-- Correo -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Correo Electrónico</label>
+            <input type="email"
+              class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="ejemplo@correo.com">
+          </div>
+
+          <!-- Fecha de nacimiento -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Fecha de Nacimiento</label>
+            <input type="date"
+              class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+
+          <!-- Modo de color -->
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium mb-1">Modo de Color</label>
+            <select class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <option value="light">Claro</option>
+              <option value="dark">Oscuro</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="flex justify-end">
+          <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md transition">Guardar
+            Cambios</button>
         </div>
 
-        <!-- Apellido -->
-        <div>
-          <label class="block text-sm font-medium mb-1">Apellido</label>
-          <input type="text" class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="Tu apellido">
-        </div>
-
-        <!-- DUI -->
-        <div>
-          <label class="block text-sm font-medium mb-1">DUI</label>
-          <input type="text" maxlength="10"
-            class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="12345678-9">
-        </div>
-
-        <!-- Contraseña -->
-        <div>
-          <label class="block text-sm font-medium mb-1">Contraseña</label>
-          <input type="password"
-            class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="Nueva contraseña">
-        </div>
-
-        <!-- Correo -->
-        <div>
-          <label class="block text-sm font-medium mb-1">Correo Electrónico</label>
-          <input type="email" class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="ejemplo@correo.com">
-        </div>
-
-        <!-- Fecha de nacimiento -->
-        <div>
-          <label class="block text-sm font-medium mb-1">Fecha de Nacimiento</label>
-          <input type="date" class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        </div>
-
-        <!-- Modo de color -->
-        <div class="md:col-span-2">
-          <label class="block text-sm font-medium mb-1">Modo de Color</label>
-          <select class="w-full p-2 rounded-md border dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            <option value="light">Claro</option>
-            <option value="dark">Oscuro</option>
-          </select>
-        </div>
-      </form>
-
-      <div class="flex justify-end">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md transition">Guardar
-          Cambios</button>
       </div>
-
     </div>
-</div>
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="../assets/js/perfil.js"></script>
+  <script src="../assets/js/auth.js"></script>
 </body>
 
 </html>

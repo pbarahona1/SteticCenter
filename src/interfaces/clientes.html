@@ -21,8 +21,7 @@
 
         <!-- Side bar cerrada -->
         <img src="../assets/img/logo_Pequeño.ico"
-          class="h-10 w-10 object-contain  h-10 transition-all duration-300 block lg:hidden" alt="Logo Pequeño" />
-
+          class="h-10 w-10 object-contain transition-all duration-300 block lg:hidden" alt="Logo Pequeño" />
       </div>
       <nav class="flex flex-col gap-4 w-full">
         <a href="dashboard.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
@@ -40,9 +39,6 @@
         <a href="facturacion.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="file-text" class="w-5 h-5"></i><span class="hidden group-hover:inline">Facturas</span>
         </a>
-        <a href="Horario.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
-          <i data-lucide="calendar-1" class="w-5 h-5"></i><span class="hidden group-hover:inline">Horario</span>
-        </a>
         <a href="perfil.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="settings" class="w-5 h-5"></i><span class="hidden group-hover:inline">Ajustes</span>
         </a>
@@ -50,12 +46,16 @@
           <i data-lucide="book-user" class="w-5 h-5"></i><span class="hidden group-hover:inline">Gestion de
             usuarios</span>
         </a>
-        <a href="inicio-sesion.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+        <a href="crear-cuenta.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="user-plus" class="w-5 h-5"></i><span class="hidden group-hover:inline">Crear cuenta</span>
+        </a>
+        <a href="#"  id="logoutBtn" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
           <i data-lucide="log-out" class="w-5 h-5"></i><span class="hidden group-hover:inline">Salir</span>
         </a>
       </nav>
     </div>
   </aside>
+
   <main class="ml-16 group-hover:ml-64 transition-all duration-300 p-6 flex-1">
 
     <div class="flex justify-between items-center mb-6">
@@ -179,6 +179,7 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="../assets/js/clientes.js"></script>
+  <script src="../assets/js/auth.js"></script>
 </body>
 
 </html>

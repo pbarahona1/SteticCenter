@@ -22,18 +22,18 @@ async function CargarUsuarios() {
 
 
 //Cargar Usuarios
-function CargarTarjetas(Usuarios){
+function CargarTarjetas(Usuarios) {
     container.innerHTML = '';
 
-    if(Usuarios.length == 0){
+    if (Usuarios.length == 0) {
         //Si "Usuarios" esta vacio, entonces:
         container.innerHTML = "<p>No hay Usuarios registradas</p>";
         return; //Evita que el codigo se siga ejecutando
     }
 
 
-   Usuarios.forEach(Usuarios => {
-    container.innerHTML += `
+    Usuarios.forEach(Usuarios => {
+        container.innerHTML += `
   <div class="card-custom">
     <div class="card-info">
       <h3 class="card-title">Nombre: ${Usuarios.nombre}</h3>
@@ -52,21 +52,21 @@ function CargarTarjetas(Usuarios){
     </div>
   </div>
 `;
-  });
+    });
 }
 
 //Buscador
 buscador.addEventListener("input", () => {
-  const filtro = buscador.value.toLowerCase();
+    const filtro = buscador.value.toLowerCase();
 
-  const filtrados = UsuariosGlobal.filter(usuario =>
-    usuario.nombre.toLowerCase().includes(filtro) ||
-    usuario.apellido.toLowerCase().includes(filtro) ||
-    usuario.correo.toLowerCase().includes(filtro) ||
-    usuario.usuario.toLowerCase().includes(filtro)
-  );
+    const filtrados = UsuariosGlobal.filter(usuario =>
+        usuario.nombre.toLowerCase().includes(filtro) ||
+        usuario.apellido.toLowerCase().includes(filtro) ||
+        usuario.correo.toLowerCase().includes(filtro) ||
+        usuario.usuario.toLowerCase().includes(filtro)
+    );
 
-  CargarTarjetas(filtrados);
+    CargarTarjetas(filtrados);
 });
 
 
@@ -76,7 +76,7 @@ const btnAgregar = document.getElementById("btnAgregar");
 const btnCerrar = document.getElementById("cancelInsert");
 const tituloFormulario = document.getElementById("tituloFormulario");
 const frmFormulario = document.getElementById("frmFormulario");
-const tbody = document.getElementById("clientes-tbody"); 
+const tbody = document.getElementById("clientes-tbody");
 
 // Abrir dialog al darle click al botón de agregar
 btnAgregar.addEventListener("click", () => {
@@ -150,7 +150,7 @@ document.getElementById("frmFormulario").addEventListener("submit", async e => {
         return;
     }
 
-    
+
 
     const nuevoUsuario = {
         nombre,
@@ -229,11 +229,11 @@ async function BorrarUsuarios(id) {
             try {
                 const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
                 if (res.ok) {
-                        Swal.fire({
-                            title: "Exito!",
-                            text: "El empleado se elimino correctamente!",
-                            icon: "success"
-                        });
+                    Swal.fire({
+                        title: "Exito!",
+                        text: "El empleado se elimino correctamente!",
+                        icon: "success"
+                    });
                     CargarUsuarios();
                 } else {
                     Swal.fire({
@@ -255,3 +255,11 @@ async function BorrarUsuarios(id) {
 
 //Cargar al abrir 
 window.addEventListener('DOMContentLoaded', CargarUsuarios)
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('logoutBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        window.location.replace("inicio-sesion.html");
+    });
+});
+
