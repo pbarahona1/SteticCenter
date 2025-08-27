@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/crear-cuenta.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex">
+  <aside
+    class="bg-white w-16 hover:w-64 transition-all duration-300 h-screen shadow-md fixed z-10 overflow-hidden group">
+    <div class="flex flex-col items-center group-hover:items-start p-4 space-y-8">
+      <div class="flex items-center justify-center h-16 w-full">
+        <!-- Logo para sidebar expandida -->
+    <img src="../assets/img/logo.png" class="h-10 absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300" alt="Logo Estético Center" />
+    
+    <!-- Logo para sidebar contraída -->
+    <img src="../assets/img/logo_Pequeño.png" class="h-10 w-10 object-contain opacity-100 group-hover:opacity-0 transition-opacity duration-300" alt="Logo Pequeño" />
+      </div>
+      <nav class="flex flex-col gap-4 w-full">
+        <a href="dashboard.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="home" class="w-5 h-5"></i><span class="hidden group-hover:inline">Inicio</span>
+        </a>
+        <a href="citas.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="calendar" class="w-5 h-5"></i><span class="hidden group-hover:inline">Citas</span>
+        </a>
+        <a href="clientes.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="users" class="w-5 h-5"></i><span class="hidden group-hover:inline">Clientes</span>
+        </a>
+        <a href="servicios.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="scissors" class="w-5 h-5"></i><span class="hidden group-hover:inline">Servicios</span>
+        </a>
+        <a href="facturas.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="file-text" class="w-5 h-5"></i><span class="hidden group-hover:inline">Facturas</span>
+        </a>
+        <a href="perfil.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="settings" class="w-5 h-5"></i><span class="hidden group-hover:inline">Ajustes</span>
+        </a>
+        <a href="usuarios.html" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="book-user" class="w-5 h-5"></i><span class="hidden group-hover:inline">Gestion de
+            usuarios</span>
+        </a>
+        <a href="#"  id="logoutBtn" class="flex items-center gap-3 text-gray-700 hover:text-pink-600">
+          <i data-lucide="log-out" class="w-5 h-5"></i><span class="hidden group-hover:inline">Salir</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="ml-16 flex-1 p-6 transition-all duration-300">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">Sistema de Facturación</h1>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <div class="flex items-center gap-2">
+                    <button id="Abrir-Crear" class="bg-success text-white px-6 py-2 rounded-lg bg-green-700">
+        Crear factura
+                      </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros de búsqueda -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-primary mb-4">Filtrar Facturas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">N° Factura</label>
+                    <input type="text" placeholder="Buscar por número" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Cliente</label>
+                    <input type="text" placeholder="Buscar cliente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Fecha Desde</label>
+                    <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Fecha Hasta</label>
+                    <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+            </div>
+            <div class="mt-4 flex justify-end">
+                <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-800 transition-colors">
+                    Buscar
+                </button>
+            </div>
+        </div>
+
+        <!-- Lista de facturas -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-primary">Lista de Facturas</h2>
+                <span class="text-gray-500">Mostrando 8 facturas</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">N° Factura</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Factura 1 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">FAC-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Juan Pérez</td>
+                            <td class="px-6 py-4 whitespace-nowrap">25/08/2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap">$175.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">PAGADA</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="lucide" data-icon="eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">
+                                        <i class="lucide" data-icon="printer"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">
+                                        <i class="lucide" data-icon="trash-2"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Factura 2 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">FAC-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap">María García</td>
+                            <td class="px-6 py-4 whitespace-nowrap">24/08/2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap">$220.50</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">PENDIENTE</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="lucide" data-icon="eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">
+                                        <i class="lucide" data-icon="printer"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">
+                                        <i class="lucide" data-icon="trash-2"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Más facturas de ejemplo -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">FAC-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Carlos Rodríguez</td>
+                            <td class="px-6 py-4 whitespace-nowrap">23/08/2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap">$95.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">PAGADA</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="lucide" data-icon="eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">
+                                        <i class="lucide" data-icon="printer"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">
+                                        <i class="lucide" data-icon="trash-2"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">FAC-004</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Ana Martínez</td>
+                            <td class="px-6 py-4 whitespace-nowrap">22/08/2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap">$310.75</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">CANCELADA</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="lucide" data-icon="eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">
+                                        <i class="lucide" data-icon="printer"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">
+                                        <i class="lucide" data-icon="trash-2"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="mt-6 flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    Mostrando <span class="font-medium">1</span> a <span class="font-medium">4</span> de <span class="font-medium">8</span> resultados
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Anterior
+                    </button>
+                    <button class="px-3 py-1 border border-primary bg-green-700 text-white rounded-md">
+                        1
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        2
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Siguiente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../assets/js/CrearCuenta.js"></script>
+    <script src="../assets/js/auth.js"></script>
+</body>
+
+</html>

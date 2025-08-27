@@ -1,28 +1,7 @@
 //Iconos de la slideBar 
 lucide.createIcons();
 
-// Función para manejar el cambio de logos en el sidebar
-    function toggleLogos() {
-        const sidebar = document.querySelector('aside');
-        const logoGrande = document.querySelector('img[alt="Logo Estético Center"]');
-        const logoPequeño = document.querySelector('img[alt="Logo Pequeño"]');
-        
-        // Verificar si el sidebar está expandido (hover)
-        const isExpanded = sidebar.matches(':hover');
-        
-        // Mostrar/ocultar logos según el estado
-        if (isExpanded) {
-            logoGrande.classList.remove('hidden');
-            logoGrande.classList.add('block');
-            logoPequeño.classList.remove('block');
-            logoPequeño.classList.add('hidden');
-        } else {
-            logoGrande.classList.remove('block');
-            logoGrande.classList.add('hidden');
-            logoPequeño.classList.remove('hidden');
-            logoPequeño.classList.add('block');
-        }
-    }
+
 
     // Inicializar cuando el DOM esté cargado
     document.addEventListener('DOMContentLoaded', function() {
@@ -342,3 +321,16 @@ function generarFilasTablaPDF() {
     return filas;
 }
         
+
+document.addEventListener('DOMContentLoaded', function() {
+    const botonFactura = document.getElementById('Abrir-Lista');
+    
+    if (botonFactura) {
+        botonFactura.addEventListener('click', function() {
+            // Redirigir a la página de facturación
+            window.location.href = 'facturas.html';
+        });
+    } else {
+        console.error('El botón con ID "guardar-factura" no fue encontrado');
+    }
+});
