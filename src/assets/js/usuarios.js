@@ -36,5 +36,22 @@ export async function deleteUsuarios(id){
     }
 }
 
+export async function userOrDuiExists(usuario, dui, id = null) {
+    try {
+        const usuarios = await GetUsuarios();
+        const existeUsuario = usuarios.find(
+            u => u.usuario.toLowerCase() === usuario.toLowerCase() && u.idUsuario != id
+        );
+        const existeDui = usuarios.find(
+            u => u.dui === dui && u.idUsuario != id
+        );
 
-
+        return {
+            usuario: !!existeUsuario,
+            dui: !!existeDui
+        };
+    } catch (error) {
+        console.error("Error verificando usuario/dui:", error);
+        return { usuario: false, dui: false };
+    }
+}

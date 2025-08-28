@@ -6,7 +6,21 @@ import{
     updateUsuarios,
     deleteUsuarios,
     createUsuarios,
+    userOrDuiExists,
 } from "../js/usuarios.js"
+
+// Configuración base de Toast
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -162,12 +176,45 @@ function getNombreRol(idRol) {
     const direccion = document.getElementById("txtDireccionUsuario").value.trim();
     const correo = document.getElementById("txtCorreoUsuario").value.trim();
 
+    // 🔍 Validar campos vacíos
     if (!nombre || !apellido || !dui || !tipo || !usuario || !contrasena || !nacimiento || !direccion || !correo) {
-        Swal.fire({
-            title: "Campos incompletos",
-            text: "Por favor completa todos los campos.",
-            icon: "warning"
-        });
+        Toast.fire({ icon: "warning", title: "Completa todos los campos." });
+        return;
+    }
+
+    // 🔍 Validar fecha de nacimiento (igual que antes)
+    const fechaNac = new Date(nacimiento);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mesDif = hoy.getMonth() - fechaNac.getMonth();
+    const diaDif = hoy.getDate() - fechaNac.getDate();
+    const esMenor = edad < 18 || (edad === 18 && (mesDif < 0 || (mesDif === 0 && diaDif < 0)));
+
+    if (isNaN(fechaNac) || fechaNac > hoy) {
+        Toast.fire({ icon: "error", title: "No puedes ingresar una fecha futura." });
+        return;
+    }
+    if (esMenor) {
+        Toast.fire({ icon: "error", title: "Debe ser mayor de 18 años." });
+        return;
+    }
+
+    // 🔍 Validar existencia de usuario y DUI usando service
+    const { usuario: existeUsuario, dui: existeDui } = await userOrDuiExists(usuario, dui, id);
+
+    if (existeUsuario) {
+        Toast.fire({ icon: "error", title: "El nombre de usuario ya está registrado." });
+        return;
+    }
+    if (existeDui) {
+        Toast.fire({ icon: "error", title: "El DUI ya está registrado." });
+        return;
+    }
+
+    //Validar formato dui
+    const duiRegex = /^\d{8}-\d$/;
+    if (!duiRegex.test(dui)) {
+        Toast.fire({ icon: "error", title: "El DUI debe tener el formato ########-#." });
         return;
     }
 
@@ -178,7 +225,7 @@ function getNombreRol(idRol) {
         idTipoUsuario: parseInt(tipo),
         usuario,
         contrasena,
-        nacimiento: new Date(nacimiento),
+        nacimiento: fechaNac,
         direccion,
         correo
     };
@@ -201,8 +248,6 @@ function getNombreRol(idRol) {
             modal.close();
             loadUsers();
         } else {
-            modal.close();
-            const errorData = await res.json();
             Swal.fire({
                 title: "Error",
                 text: errorData.message || "No se pudo completar la operación.",
