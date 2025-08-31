@@ -1,9 +1,17 @@
 //Aquí va la URL de la API, no los endpoints específicos
 const API_URL = "http://localhost:8080/api/Usuario";
 
-export async function GetUsuarios(){
-    const res = await fetch(`${API_URL}/GetUsuarios`);
-    return res.json();
+export async function GetUsuarios(page = 0, size = 8) {
+    const res = await fetch(`${API_URL}/GetUsuarios?page=${page}&size=${size}`);
+    const data = await res.json();
+
+    // ⚡ ahora devolvemos tanto el contenido como la metadata
+    return {
+        usuarios: data.content || [],   // 👈 me aseguro que sea array
+        totalPages: data.totalPages,
+        totalElements: data.totalElements,
+        currentPage: data.number
+    };
 }
 
 export async function createUsuarios(data){

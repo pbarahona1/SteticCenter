@@ -66,48 +66,71 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     // Funciones principales
-    async function loadUsers() {
-        try {
-            usuariosGlobal = await GetUsuarios();
-            renderUsers(usuariosGlobal);
-        } catch (err) {
-            console.error('Error al cargar los datos:', err);
-            container.innerHTML = '<p>Error al cargar los usuarios.</p>';
-        }
+    async function loadUsers(page = 0, size = 8) {
+    try {
+        const response = await GetUsuarios(page, size);
+
+        usuariosGlobal = response.usuarios; // 👈 ahora sí es un array
+        renderUsers(usuariosGlobal);
+
+        renderPagination(response.totalPages, response.currentPage);
+    } catch (err) {
+        console.error('Error al cargar los datos:', err);
+        container.innerHTML = '<p>Error al cargar los usuarios.</p>';
     }
+}
+
+function renderPagination(totalPages, currentPage) {
+    const paginationContainer = document.getElementById("pagination-container");
+    paginationContainer.innerHTML = "";
+
+    for (let i = 0; i < totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i + 1;
+        btn.classList.add("px-3", "py-1", "m-1", "rounded", "border");
+
+        if (i === currentPage) {
+            btn.classList.add("bg-pink-500", "text-white");
+        } else {
+            btn.classList.add("bg-white", "hover:bg-gray-200");
+            btn.addEventListener("click", () => loadUsers(i));
+        }
+
+        paginationContainer.appendChild(btn);
+    }
+}
     
     function renderUsers(users) {
-        container.innerHTML = '';
-        
-        if (users.length === 0) {
-            container.innerHTML = "<p>No hay Usuarios registrados</p>";
-            return;
-        }
-        
-        users.forEach(user => {
-            const fechaNacimiento = new Date(user.nacimiento).toLocaleDateString();
+    container.innerHTML = '';
 
+    if (!Array.isArray(users) || users.length === 0) {
+        container.innerHTML = "<p>No hay Usuarios registrados</p>";
+        return;
+    }
 
-            container.innerHTML += `
-                <div class="card-custom">
-                    <div class="card-info">
-                        <h3 class="card-title">${user.nombre} ${user.apellido}</h3>
-                        <p><strong>Correo Electrónico:</strong> ${user.correo}</p>
-                        <p><strong>Dui:</strong> ${user.dui}</p>
-                        <p><strong>Rol:</strong> ${getNombreRol(user.idTipoUsuario)}</p>
-                        <p><strong>Usuario:</strong> ${user.usuario}</p>
-                        <p><strong>Contraseña:</strong> ${user.contrasena}</p>
-                        <p><strong>Fecha Nacimiento:</strong> ${fechaNacimiento}</p>
-                        <p><strong>Dirección:</strong> ${user.direccion}</p>
-                        <div class="card-actions">
-                            <button class="btn-action editar" onclick="userController.abrirFormulario(${user.idUsuario})">Editar</button>
-<button class="btn-action eliminar" onclick="userController.borrarUsuario(${user.idUsuario})">Eliminar</button>
-                        </div>
+    users.forEach(user => {
+        const fechaNacimiento = new Date(user.nacimiento).toLocaleDateString();
+
+        container.innerHTML += `
+            <div class="card-custom">
+                <div class="card-info">
+                    <h3 class="card-title">${user.nombre} ${user.apellido}</h3>
+                    <p><strong>Correo Electrónico:</strong> ${user.correo}</p>
+                    <p><strong>Dui:</strong> ${user.dui}</p>
+                    <p><strong>Rol:</strong> ${getNombreRol(user.idTipoUsuario)}</p>
+                    <p><strong>Usuario:</strong> ${user.usuario}</p>
+                    <p><strong>Contraseña:</strong> ${user.contrasena}</p>
+                    <p><strong>Fecha Nacimiento:</strong> ${fechaNacimiento}</p>
+                    <p><strong>Dirección:</strong> ${user.direccion}</p>
+                    <div class="card-actions">
+                        <button class="btn-action editar" onclick="userController.abrirFormulario(${user.idUsuario})">Editar</button>
+                        <button class="btn-action eliminar" onclick="userController.borrarUsuario(${user.idUsuario})">Eliminar</button>
                     </div>
                 </div>
-            `;
-        });
-    }
+            </div>
+        `;
+    });
+}
 
     //Funcion para los roles en vez de un inner join xq que weba
 function getNombreRol(idRol) {
