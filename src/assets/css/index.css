@@ -1,8 +1,236 @@
+/*Nav y slogan y carousel*/
+
 .Botones{
     display: flex;
     justify-content: start;
     align-items: start;
+    padding: 0px;
+    margin: 20px;  
+}
+
+.a-btn{
+    text-decoration: none;
+    color: black;
+}
+
+.img-logo{
+    padding: 20px;
+}
+
+.nav-link {
+      padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover,
+    .nav-link.active {
+      color: #1393a4 !important;
+}
+
+
+ .btn-login {
+    background-color: #ffc107;
+    border: none;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+    margin-left: 1rem;
+}
+    
+.btn-login:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.container-fluid{
+    background-color: #f0f5f6;
+}
+
+.carousel-item {
+  height: 80vh;
+  min-height: 500px;
+}
+
+.carousel-item img {
+  object-fit: cover;
+  height: 100%;
+  filter: brightness(0.7);
+}
+
+.Slogan{
+    font-family: "Lobster", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px;
+    color: #1393a4;
+}
+
+.slogan-p{
+    font-size: 20px;
+    color: black;
+}
+
+.slogan-class{
+    background: #ffffff;
+background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(204, 202, 202, 1) 100%);
+}
+
+.about-section{
+background: #e0dcde;
+background: linear-gradient(nulldeg, rgba(224, 220, 222, 1) 0%, rgba(227, 235, 255, 1) 100%);
 }
 
 
 
+/*carta*/
+.contenedor {
+    padding: 40px;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+        
+.tarjeta {
+    width: 320px;
+    height: 400px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+        
+.tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+        
+.imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s, filter 0.5s;
+}
+        
+.tarjeta:hover .imagen {
+    transform: scale(1.05);
+    filter: brightness(0.7);
+}
+        
+.contenido {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.5s;
+}
+        
+.tarjeta:hover .contenido {
+    transform: translateY(0);
+    opacity: 1;
+}
+        
+.titulo {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+        
+.texto {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+        
+.boton {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #ffffff;
+    color: black;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+        
+.boton:hover {
+    background-color: #f0f0f0;
+}
+
+/*Titulo de servicios*/
+
+.section-title {
+    font-family: "Lobster", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px;
+    color: #4ad188;
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/*contenedor de fondo de las cartas*/
+.cartass{
+background: #e0dcde;
+background: linear-gradient(nulldeg, rgba(224, 220, 222, 1) 0%, rgba(227, 235, 255, 1) 100%);
+}
+
+/*Contacto*/
+.contact-section {
+    background-color: #2c3e50;
+    color: white;
+    padding: 50px 0;
+    border-radius: 10px;
+    
+}
+        
+.contact-section h3, .contact-section h4 {
+    color: #4ad188;
+    margin-bottom: 20px;
+}
+        
+.contact-section a {
+    color: white;
+    text-decoration: none;
+}
+        
+    
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+        
+.social-links a:hover {
+    background: #d4af37;
+    transform: translateY(-3px);
+}
+        
+.list-unstyled li {
+    margin-bottom: 10px;
+}
+        
+       
+
+
+
+
+        
