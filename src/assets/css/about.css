@@ -1,5 +1,4 @@
 /*Nav*/
-
 .Botones{
     display: flex;
     justify-content: start;
@@ -44,9 +43,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/*AboutMain*/
-
-
 
 /*Contacto*/
 .contact-section {
@@ -89,7 +85,8 @@
     margin-bottom: 10px;
 }
 
-/*Presntacion*/
+/*AboutMain*/
+
 .hero-section {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/poster.avif');
     background-size: cover;
