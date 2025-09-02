@@ -1,0 +1,216 @@
+/*Nav*/
+
+.Botones{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    padding: 0px;
+    margin: 20px;  
+}
+
+.a-btn{
+    text-decoration: none;
+    color: black;
+}
+
+.img-logo{
+    padding: 20px;
+}
+
+.nav-link {
+      padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover,
+    .nav-link.active {
+      color: #1393a4 !important;
+}
+
+
+ .btn-login {
+    background-color: #ffc107;
+    border: none;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+    margin-left: 1rem;
+}
+    
+.btn-login:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/*AboutMain*/
+
+
+
+/*Contacto*/
+.contact-section {
+    background-color: #2c3e50;
+    color: white;
+    padding: 50px 0;
+    border-radius: 10px;
+    
+}
+        
+.contact-section h3, .contact-section h4 {
+    color: #4ad188;
+    margin-bottom: 20px;
+}
+        
+.contact-section a {
+    color: white;
+    text-decoration: none;
+}
+        
+    
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+        
+.social-links a:hover {
+    background: #d4af37;
+    transform: translateY(-3px);
+}
+        
+.list-unstyled li {
+    margin-bottom: 10px;
+}
+
+/*Presntacion*/
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/poster.avif');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+    
+.hero-title {
+    font-family: 'Lobster', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+    
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+    
+/*Sobre nosotros*/
+.about-content {
+    padding: 80px 0;
+}
+    
+.section-title {
+    font-family: 'Lobster', cursive;
+    color: #4ad188;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title2 {
+    font-family: 'Lobster', cursive;
+    color: #1393a4;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #4ad188;
+}
+    
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #4ad188;
+}
+    
+.about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+    
+.benefits-list {
+    list-style: none;
+    padding: 0;
+}
+    
+.benefits-list li {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+    
+.benefits-list li::before {
+    content: '✓';/*Buscar icono despues*/
+    position: absolute;
+    left: 0;
+    color: #4ad188;
+    font-weight: bold;
+}
+    
+.video-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+    
+/*Tarjetas*/
+.features-section {
+    background-color: #f0f5f6;
+    padding: 80px 0;
+}
+    
+.feature-card {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+    height: 100%;
+}
+    
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+    
+.feature-icon {
+    font-size: 2.5rem;
+    color: #1393a4;
+    margin-bottom: 1rem;
+}
+    
+.feature-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+    
