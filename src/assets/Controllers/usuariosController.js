@@ -6,7 +6,6 @@ import{
     updateUsuarios,
     deleteUsuarios,
     createUsuarios,
-    userOrDuiExists,
 } from "../js/usuarios.js"
 
 // Configuración base de Toast
@@ -132,7 +131,7 @@ function renderPagination(totalPages, currentPage) {
     });
 }
 
-    //Funcion para los roles en vez de un inner join xq que weba
+    //Funcion para los roles
 function getNombreRol(idRol) {
     const roles = {
         1: 'Admin',
@@ -185,7 +184,7 @@ function getNombreRol(idRol) {
     modal.showModal();
 }
     
-    async function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
     
     const id = document.getElementById("txtIdUsuario").value;
@@ -199,13 +198,13 @@ function getNombreRol(idRol) {
     const direccion = document.getElementById("txtDireccionUsuario").value.trim();
     const correo = document.getElementById("txtCorreoUsuario").value.trim();
 
-    // 🔍 Validar campos vacíos
+    // Validar campos vacíos
     if (!nombre || !apellido || !dui || !tipo || !usuario || !contrasena || !nacimiento || !direccion || !correo) {
         Toast.fire({ icon: "warning", title: "Completa todos los campos." });
         return;
     }
 
-    // 🔍 Validar fecha de nacimiento (igual que antes)
+    // Validar fecha de nacimiento
     const fechaNac = new Date(nacimiento);
     const hoy = new Date();
     const edad = hoy.getFullYear() - fechaNac.getFullYear();
@@ -222,25 +221,14 @@ function getNombreRol(idRol) {
         return;
     }
 
-    // 🔍 Validar existencia de usuario y DUI usando service
-    const { usuario: existeUsuario, dui: existeDui } = await userOrDuiExists(usuario, dui, id);
-
-    if (existeUsuario) {
-        Toast.fire({ icon: "error", title: "El nombre de usuario ya está registrado." });
-        return;
-    }
-    if (existeDui) {
-        Toast.fire({ icon: "error", title: "El DUI ya está registrado." });
-        return;
-    }
-
-    //Validar formato dui
+    // Validar formato DUI
     const duiRegex = /^\d{8}-\d$/;
     if (!duiRegex.test(dui)) {
         Toast.fire({ icon: "error", title: "El DUI debe tener el formato ########-#." });
         return;
     }
 
+    // Construir objeto de usuario
     const userData = {
         nombre,
         apellido,
@@ -256,11 +244,14 @@ function getNombreRol(idRol) {
     try {
         let res;
         if (id) {
+            // Actualizar usuario
             res = await updateUsuarios(id, userData);
         } else {
+            // Crear usuario
             res = await createUsuarios(userData);
         }
 
+        // Manejo de respuestas
         if (res.ok) {
             Swal.fire({
                 title: "¡Éxito!",
@@ -270,13 +261,17 @@ function getNombreRol(idRol) {
             frmFormulario.reset();
             modal.close();
             loadUsers();
+        } else if (res.status === 409) {
+            // Dato duplicado
+            Toast.fire({ icon: "error", title: res.data?.message || "Dato duplicado." });
         } else {
             Swal.fire({
                 title: "Error",
-                text: errorData.message || "No se pudo completar la operación.",
+                text: res.data?.message || "No se pudo completar la operación.",
                 icon: "error"
             });
         }
+
     } catch (error) {
         modal.close();
         console.error("Error en la solicitud:", error);

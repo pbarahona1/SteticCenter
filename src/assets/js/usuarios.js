@@ -17,10 +17,22 @@ export async function GetUsuarios(page = 0, size = 8) {
 export async function createUsuarios(data){
     const res = await fetch(`${API_URL}/PostUsuarios`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
     });
-    return res; // <-- Devuelve la respuesta para validarla
+
+    let responseData;
+    try {
+        responseData = await res.json();
+    } catch {
+        responseData = { message: "Error inesperado en el servidor" };
+    }
+
+    return {
+        ok: res.ok,
+        status: res.status,
+        data: responseData
+    };
 }
 
 export async function updateUsuarios(id, data){
@@ -44,22 +56,3 @@ export async function deleteUsuarios(id){
     }
 }
 
-export async function userOrDuiExists(usuario, dui, id = null) {
-    try {
-        const usuarios = await GetUsuarios();
-        const existeUsuario = usuarios.find(
-            u => u.usuario.toLowerCase() === usuario.toLowerCase() && u.idUsuario != id
-        );
-        const existeDui = usuarios.find(
-            u => u.dui === dui && u.idUsuario != id
-        );
-
-        return {
-            usuario: !!existeUsuario,
-            dui: !!existeDui
-        };
-    } catch (error) {
-        console.error("Error verificando usuario/dui:", error);
-        return { usuario: false, dui: false };
-    }
-}
