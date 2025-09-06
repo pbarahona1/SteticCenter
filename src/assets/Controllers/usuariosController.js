@@ -44,9 +44,18 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Event listeners
     buscador.addEventListener("input", handleSearch);
-    btnAgregar.addEventListener("click", () => abrirFormulario());
-    btnCerrar.addEventListener("click", () => modal.close());
-    frmFormulario.addEventListener("submit", handleFormSubmit);
+
+    btnAgregar.addEventListener("click", () => {
+        abrirFormulario();
+        document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+    });
+
+    btnCerrar.addEventListener("click", () => {
+        modal.close();
+        document.body.style.overflow = ''; // Restaurar scroll
+    });
+
+    frmFormulario.addEventListener("submit", handleFormSubmit );
     
     // Validación del DUI
     document.getElementById("txtDuiUsuario").addEventListener("input", function () {
@@ -309,6 +318,7 @@ async function handleFormSubmit(e) {
                 text: id ? "El usuario se actualizó correctamente." : "El usuario se agregó correctamente.",
                 icon: "success"
             });
+            document.body.style.overflow = '';
             frmFormulario.reset();
             modal.close();
             ResetearBuscadorSuccesOperation()
@@ -317,6 +327,10 @@ async function handleFormSubmit(e) {
 
             Toast.fire({ icon: "error", title: res.data?.message || "Dato duplicado." });
         } else {
+            modal.close();
+            ResetearBuscadorSuccesOperation()
+            loadUsers();
+            document.body.style.overflow = '';
             Swal.fire({
                 title: "Error",
                 text: res.data?.message || "No se pudo completar la operación.",
@@ -366,6 +380,7 @@ async function handleFormSubmit(e) {
                     });
                 }
             } catch (error) {
+                document.body.style.overflow = '';
                 console.error('Error inesperado:', error);
                 Swal.fire({
                     title: 'Error',

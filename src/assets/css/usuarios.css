@@ -270,6 +270,10 @@ dialog select:focus {
   margin-top: 1rem; 
 }
 
+#mdFormulario::backdrop {
+  background: none; 
+}
+
 .formAgregar button {
   display: flex;
   align-items: center;
