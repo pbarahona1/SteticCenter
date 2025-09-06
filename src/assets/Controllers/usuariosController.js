@@ -221,6 +221,41 @@ async function handleFormSubmit(e) {
         return;
     }
 
+    if(contrasena.length < 8){
+        Toast.fire({ icon: "error", title: "La contraseña tiene que tener mas de 8 caracteres." });
+        return;
+    }
+
+    if(contrasena.length > 20){
+        Toast.fire({ icon: "error", title: "La contraseña tiene que tener menos de 20 caracteres." });
+        return;
+    }
+
+     if(nombre.length > 100){
+        Toast.fire({ icon: "error", title: "El nombre no puede superar los 100 caracteres." });
+        return;
+    }
+
+    if(apellido.length > 100){
+        Toast.fire({ icon: "error", title: "El apellido no puede superar los 100 caracteres." });
+        return;
+    }
+
+    if(correo.length > 100){
+        Toast.fire({ icon: "error", title: "El correo no puede superar los 100 caracteres." });
+        return;
+    }
+
+    if(usuario.length > 50){
+        Toast.fire({ icon: "error", title: "El usuario no puede superar los 50 caracteres." });
+        return;
+    }
+
+    if(direccion.length > 100){
+        Toast.fire({ icon: "error", title: "La direccion no puede superar los 100 caracteres." });
+        return;
+    }
+
     // Validar formato DUI
     const duiRegex = /^\d{8}-\d$/;
     if (!duiRegex.test(dui)) {
