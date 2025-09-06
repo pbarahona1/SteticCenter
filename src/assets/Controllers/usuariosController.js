@@ -6,6 +6,7 @@ import{
     updateUsuarios,
     deleteUsuarios,
     createUsuarios,
+    searchUsuarios,
 } from "../js/usuarios.js"
 
 // Configuración base de Toast
@@ -131,7 +132,7 @@ function renderPagination(totalPages, currentPage) {
     });
 }
 
-    //Funcion para los roles
+//Funcion para los roles
 function getNombreRol(idRol) {
     const roles = {
         1: 'Admin',
@@ -142,19 +143,34 @@ function getNombreRol(idRol) {
 }
 
     
+let currentSearchTerm = '';    
+
+async function handleSearch() {
+    const filtro = buscador.value.toLowerCase();
+    currentSearchTerm = filtro;
     
-    function handleSearch() {
-        const filtro = buscador.value.toLowerCase();
-        
-        const filtrados = usuariosGlobal.filter(usuario =>
-            usuario.nombre.toLowerCase().includes(filtro) ||
-            usuario.apellido.toLowerCase().includes(filtro) ||
-            usuario.correo.toLowerCase().includes(filtro) ||
-            usuario.usuario.toLowerCase().includes(filtro)
-        );
-        
-        renderUsers(filtrados);
+    if (filtro === '') {
+        // Si no hay filtro, cargar usuarios normales
+        loadUsers(0);
+        return;
     }
+    
+    try {
+        const response = await searchUsuarios(filtro, 0, 8);
+        usuariosGlobal = response.usuarios;
+        renderUsers(usuariosGlobal);
+        renderPagination(response.totalPages, response.currentPage);
+    } catch (err) {
+        console.error('Error al buscar usuarios:', err);
+        container.innerHTML = '<p>Error al buscar usuarios.</p>';
+    }
+}
+
+function ResetearBuscadorSuccesOperation() {
+    currentSearchTerm = '';
+    buscador.value = '';
+    loadUsers(0);
+}
     
     function abrirFormulario(userId = null) {
     if (userId) {
@@ -256,14 +272,14 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    // Validar formato DUI
+
     const duiRegex = /^\d{8}-\d$/;
     if (!duiRegex.test(dui)) {
         Toast.fire({ icon: "error", title: "El DUI debe tener el formato ########-#." });
         return;
     }
 
-    // Construir objeto de usuario
+
     const userData = {
         nombre,
         apellido,
@@ -279,14 +295,14 @@ async function handleFormSubmit(e) {
     try {
         let res;
         if (id) {
-            // Actualizar usuario
+
             res = await updateUsuarios(id, userData);
         } else {
-            // Crear usuario
+
             res = await createUsuarios(userData);
         }
 
-        // Manejo de respuestas
+
         if (res.ok) {
             Swal.fire({
                 title: "¡Éxito!",
@@ -295,9 +311,10 @@ async function handleFormSubmit(e) {
             });
             frmFormulario.reset();
             modal.close();
+            ResetearBuscadorSuccesOperation()
             loadUsers();
         } else if (res.status === 409) {
-            // Dato duplicado
+
             Toast.fire({ icon: "error", title: res.data?.message || "Dato duplicado." });
         } else {
             Swal.fire({
@@ -339,6 +356,7 @@ async function handleFormSubmit(e) {
                         text: "El usuario se eliminó correctamente!",
                         icon: "success"
                     });
+                    ResetearBuscadorSuccesOperation()
                     loadUsers(); 
                 } else {
                     Swal.fire({
@@ -359,7 +377,7 @@ async function handleFormSubmit(e) {
     });
 }
     
-    // Hacer funciones disponibles globalmente para los botones en las tarjetas
+
     window.userController = {
         abrirFormulario,
         borrarUsuario
