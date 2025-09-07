@@ -5,9 +5,9 @@ export async function GetUsuarios(page = 0, size = 8) {
     const res = await fetch(`${API_URL}/GetUsuarios?page=${page}&size=${size}`);
     const data = await res.json();
 
-    // ⚡ ahora devolvemos tanto el contenido como la metadata
+
     return {
-        usuarios: data.content || [],   // 👈 me aseguro que sea array
+        usuarios: data.content || [],   
         totalPages: data.totalPages,
         totalElements: data.totalElements,
         currentPage: data.number
@@ -41,18 +41,29 @@ export async function updateUsuarios(id, data){
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
     });
-    return res; // <-- Devuelve la respuesta para validarla
+    return res;
 }
 export async function deleteUsuarios(id){
     const response = await fetch(`${API_URL}/DeleteUsuario/${id}`, {
         method: "DELETE"
     });
     
-    // Verificar si la respuesta fue exitosa (código 200-299)
+    
     if (response.ok) {
-        return true; // Éxito
+        return true; 
     } else {
-        return false; // Error
+        return false; 
     }
 }
 
+export async function searchUsuarios(filtro, page = 0, size = 8) {
+    const res = await fetch(`${API_URL}/SearchUsuarios?filtro=${encodeURIComponent(filtro)}&page=${page}&size=${size}`);
+    const data = await res.json();
+    
+    return {
+        usuarios: data.content || [],
+        totalPages: data.totalPages,
+        totalElements: data.totalElements,
+        currentPage: data.number
+    };
+}

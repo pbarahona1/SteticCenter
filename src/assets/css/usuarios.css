@@ -68,9 +68,57 @@ body {
 /*Tajetas*/
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
 }
+
+.card-custom {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card-custom:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-info p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.card-info p strong {
+  color: #2d3748;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #f1f1f1;
+}
+
 
 .card-custom {
   display: flex;
@@ -82,7 +130,7 @@ body {
   overflow: hidden;
   padding: 1.5rem;
   transition: transform 0.2s ease-in-out;
-  min-height: 100%; /* garantiza misma altura si hay grid */
+  min-height: 100%; 
 }
 
 .card-custom:hover {
@@ -146,7 +194,7 @@ body {
     position: fixed;
     bottom: 30px;
     right: 40px;
-    background-color: #27AD3B;
+    background-color: #db2777;
     color: white;
     border-radius: 50%;
     width: 70px;
@@ -220,6 +268,10 @@ dialog select:focus {
   justify-content: flex-end; 
   gap: 1rem; 
   margin-top: 1rem; 
+}
+
+#mdFormulario::backdrop {
+  background: none; 
 }
 
 .formAgregar button {

@@ -6,6 +6,7 @@ import{
     updateUsuarios,
     deleteUsuarios,
     createUsuarios,
+    searchUsuarios,
 } from "../js/usuarios.js"
 
 // Configuración base de Toast
@@ -43,9 +44,18 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Event listeners
     buscador.addEventListener("input", handleSearch);
-    btnAgregar.addEventListener("click", () => abrirFormulario());
-    btnCerrar.addEventListener("click", () => modal.close());
-    frmFormulario.addEventListener("submit", handleFormSubmit);
+
+    btnAgregar.addEventListener("click", () => {
+        abrirFormulario();
+        document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+    });
+
+    btnCerrar.addEventListener("click", () => {
+        modal.close();
+        document.body.style.overflow = ''; // Restaurar scroll
+    });
+
+    frmFormulario.addEventListener("submit", handleFormSubmit );
     
     // Validación del DUI
     document.getElementById("txtDuiUsuario").addEventListener("input", function () {
@@ -131,7 +141,7 @@ function renderPagination(totalPages, currentPage) {
     });
 }
 
-    //Funcion para los roles
+//Funcion para los roles
 function getNombreRol(idRol) {
     const roles = {
         1: 'Admin',
@@ -142,19 +152,34 @@ function getNombreRol(idRol) {
 }
 
     
+let currentSearchTerm = '';    
+
+async function handleSearch() {
+    const filtro = buscador.value.toLowerCase();
+    currentSearchTerm = filtro;
     
-    function handleSearch() {
-        const filtro = buscador.value.toLowerCase();
-        
-        const filtrados = usuariosGlobal.filter(usuario =>
-            usuario.nombre.toLowerCase().includes(filtro) ||
-            usuario.apellido.toLowerCase().includes(filtro) ||
-            usuario.correo.toLowerCase().includes(filtro) ||
-            usuario.usuario.toLowerCase().includes(filtro)
-        );
-        
-        renderUsers(filtrados);
+    if (filtro === '') {
+        // Si no hay filtro, cargar usuarios normales
+        loadUsers(0);
+        return;
     }
+    
+    try {
+        const response = await searchUsuarios(filtro, 0, 8);
+        usuariosGlobal = response.usuarios;
+        renderUsers(usuariosGlobal);
+        renderPagination(response.totalPages, response.currentPage);
+    } catch (err) {
+        console.error('Error al buscar usuarios:', err);
+        container.innerHTML = '<p>Error al buscar usuarios.</p>';
+    }
+}
+
+function ResetearBuscadorSuccesOperation() {
+    currentSearchTerm = '';
+    buscador.value = '';
+    loadUsers(0);
+}
     
     function abrirFormulario(userId = null) {
     if (userId) {
@@ -221,14 +246,49 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    // Validar formato DUI
+    if(contrasena.length < 8){
+        Toast.fire({ icon: "error", title: "La contraseña tiene que tener mas de 8 caracteres." });
+        return;
+    }
+
+    if(contrasena.length > 20){
+        Toast.fire({ icon: "error", title: "La contraseña tiene que tener menos de 20 caracteres." });
+        return;
+    }
+
+     if(nombre.length > 100){
+        Toast.fire({ icon: "error", title: "El nombre no puede superar los 100 caracteres." });
+        return;
+    }
+
+    if(apellido.length > 100){
+        Toast.fire({ icon: "error", title: "El apellido no puede superar los 100 caracteres." });
+        return;
+    }
+
+    if(correo.length > 100){
+        Toast.fire({ icon: "error", title: "El correo no puede superar los 100 caracteres." });
+        return;
+    }
+
+    if(usuario.length > 50){
+        Toast.fire({ icon: "error", title: "El usuario no puede superar los 50 caracteres." });
+        return;
+    }
+
+    if(direccion.length > 100){
+        Toast.fire({ icon: "error", title: "La direccion no puede superar los 100 caracteres." });
+        return;
+    }
+
+
     const duiRegex = /^\d{8}-\d$/;
     if (!duiRegex.test(dui)) {
         Toast.fire({ icon: "error", title: "El DUI debe tener el formato ########-#." });
         return;
     }
 
-    // Construir objeto de usuario
+
     const userData = {
         nombre,
         apellido,
@@ -244,27 +304,33 @@ async function handleFormSubmit(e) {
     try {
         let res;
         if (id) {
-            // Actualizar usuario
+
             res = await updateUsuarios(id, userData);
         } else {
-            // Crear usuario
+
             res = await createUsuarios(userData);
         }
 
-        // Manejo de respuestas
+
         if (res.ok) {
             Swal.fire({
                 title: "¡Éxito!",
                 text: id ? "El usuario se actualizó correctamente." : "El usuario se agregó correctamente.",
                 icon: "success"
             });
+            document.body.style.overflow = '';
             frmFormulario.reset();
             modal.close();
+            ResetearBuscadorSuccesOperation()
             loadUsers();
         } else if (res.status === 409) {
-            // Dato duplicado
+
             Toast.fire({ icon: "error", title: res.data?.message || "Dato duplicado." });
         } else {
+            modal.close();
+            ResetearBuscadorSuccesOperation()
+            loadUsers();
+            document.body.style.overflow = '';
             Swal.fire({
                 title: "Error",
                 text: res.data?.message || "No se pudo completar la operación.",
@@ -304,6 +370,7 @@ async function handleFormSubmit(e) {
                         text: "El usuario se eliminó correctamente!",
                         icon: "success"
                     });
+                    ResetearBuscadorSuccesOperation()
                     loadUsers(); 
                 } else {
                     Swal.fire({
@@ -313,6 +380,7 @@ async function handleFormSubmit(e) {
                     });
                 }
             } catch (error) {
+                document.body.style.overflow = '';
                 console.error('Error inesperado:', error);
                 Swal.fire({
                     title: 'Error',
@@ -324,7 +392,7 @@ async function handleFormSubmit(e) {
     });
 }
     
-    // Hacer funciones disponibles globalmente para los botones en las tarjetas
+
     window.userController = {
         abrirFormulario,
         borrarUsuario
