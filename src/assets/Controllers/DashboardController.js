@@ -24,3 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (ingresosTotalEl && !ingresosTotalEl.textContent) ingresosTotalEl.textContent = "$0";
   }
 });
+
+import { validarRol } from "../js/dashboard.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+    validarRol();
+});

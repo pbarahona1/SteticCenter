@@ -102,9 +102,27 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="../assets/js/dashboard.js"></script>
   <script type="module" src="../assets/Controllers/DashboardController.js"></script>
   <script src="../assets/js/auth.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioSesion"));
+
+    if (!usuarioSesion) {
+      window.location.href = "InicioSesion.html";
+      return;
+    }
+    const rol = usuarioSesion.rol;
+
+    if (rol === "Administrador") {
+      document.getElementById("IngresosTotal").style.display = "block";
+    } else if (rol === "Empleado") {
+      document.getElementById("IngresosTotal").style.display = "none" ;
+      document.getElementById("incomeChart").style.display = "none";
+    }
+  });
+</script>
+
 </body>
 
 </html>
