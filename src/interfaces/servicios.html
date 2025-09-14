@@ -89,8 +89,11 @@
       <input type="number" name="stock" placeholder="Stock" class="w-full p-2 border rounded hidden">
 
       <input type="number" name="precio" placeholder="Precio" class="w-full p-2 border rounded" id="txtPrecio" required>
-      <input type="file" name="imagen" class="w-full p-2 border rounded">
 
+      <input type="file" name="imagen" id="imagen" class="w-full p-2 border rounded" accept="image/jpeg, image/png, image/jpg, image/webp" required>
+
+      <div id="imagePreview" class="mt-2"></div>
+      
       <button type="submit" class="w-full py-2 bg-green-600 text-white rounded">Guardar</button>
     </form>
 
@@ -107,7 +110,8 @@
 
 
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="../assets/js/servicios.js"></script>
+  <script type="module" src="../assets/Controllers/ServiciosController.js"></script>
+  <script type="module" src="../assets/js/servicios.js"></script>
   <script src="../assets/js/auth.js"></script>
 </body>
 
