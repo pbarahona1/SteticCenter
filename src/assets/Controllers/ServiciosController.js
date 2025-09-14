@@ -212,13 +212,22 @@ document.addEventListener("DOMContentLoaded", () => {
   function openModal(data = null) {
     modal.classList.remove("hidden");
     document.body.style.overflow = 'hidden';
-    
+  
     // Obtener el id correcto según el tipo
     if (data) {
       editingId = getIdFromItem(data, currentType);
     } else {
       editingId = null;
     }
+
+    if (data) {
+  // Modo edición
+  formRegistro.imagen.required = false;
+} else {
+  // Modo creación
+  formRegistro.imagen.required = true;
+}
+
     
     modalTitle.textContent = data ? "Editar Registro" : "Agregar Registro";
 
@@ -267,74 +276,131 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Manejar envío del formulario
-  async function handleFormSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(formRegistro);
-    const fileInput = formRegistro.imagen;
+  // Manejar envío del formulario con validaciones
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  const formData = new FormData(formRegistro);
+  const fileInput = formRegistro.imagen;
 
-    try {
-      let imageUrl = "";
+  // ---- VALIDACIONES ----
+  const nombre = formData.get('nombre')?.trim();
+  const precioStr = formData.get('precio')?.trim();
+  const descripcion = formData.get('descripcion')?.trim();
+  const duracionStr = formData.get('duracion')?.trim();
+  const stockStr = formData.get('stock')?.trim();
 
-      // Si hay un archivo, subirlo a Cloudinary
-      if (fileInput.files.length > 0) {
-        imageUrl = await uploadImageToCloudinary(fileInput.files[0], currentType);
-      } else if (editingId) {
-        // Si estamos editando y no se subió nueva imagen, mantener la existente
-        const existingItem = findItemById(currentType, editingId);
-        imageUrl = existingItem?.imgUrl || "";
-      }
+  // Campos obligatorios
+  if (!nombre || !precioStr || 
+      (currentType === "paquetes" && !descripcion) ||
+      (currentType === "servicios" && !duracionStr) ||
+      (currentType === "productos" && !stockStr)) {
+    showErrorToast("Todos los campos son obligatorios.");
+    return;
+  }
 
-      // Construir el objeto según el tipo
-      const data = {
-        nombre: formData.get('nombre'),
-        precio: parseFloat(formData.get('precio')),
-        imgUrl: imageUrl
-      };
+  // Nombre máximo 100 caracteres
+  if (nombre.length > 100) {
+    showErrorToast("El nombre no puede superar los 100 caracteres.");
+    return;
+  }
 
-      // Campos específicos por tipo
-      if (currentType === "paquetes") {
-        data.descripcion = formData.get('descripcion');
-      } else if (currentType === "servicios") {
-        data.duracion_min = parseInt(formData.get('duracion'));
-      } else if (currentType === "productos") {
-        data.stock = parseInt(formData.get('stock'));
-      }
+  // Validar precio
+  const precioRegex = /^\d{1,8}(\.\d{1,2})?$/;
+  if (!precioRegex.test(precioStr)) {
+    showErrorToast("El precio debe tener hasta 8 dígitos enteros y 2 decimales.");
+    return;
+  }
+  const precio = parseFloat(precioStr);
+  if (isNaN(precio) || precio < 1) {
+    showErrorToast("El precio debe ser mayor o igual a 1.");
+    return;
+  }
 
-      let response;
-      if (editingId) {
-        // Editar
-        if (currentType === "servicios") {
-          response = await updateServicio(editingId, data);
-        } else if (currentType === "paquetes") {
-          response = await updatePaquete(editingId, data);
-        } else if (currentType === "productos") {
-          response = await updateProducto(editingId, data);
-        }
-      } else {
-        // Crear
-        if (currentType === "servicios") {
-          response = await createServicio(data);
-        } else if (currentType === "paquetes") {
-          response = await createPaquete(data);
-        } else if (currentType === "productos") {
-          response = await createProducto(data);
-        }
-      }
+  // Validar descripción (paquetes)
+  if (currentType === "paquetes" && descripcion.length > 500) {
+    showErrorToast("La descripción no puede superar los 500 caracteres.");
+    return;
+  }
 
-      if (response.ok) {
-        modal.classList.add("hidden");
-        document.body.style.overflow = '';
-        Swal.fire("Éxito", "Registro guardado correctamente", "success");
-        loadData(currentType);
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error al guardar");
-      }
-    } catch (err) {
-      console.error(err);
-      Swal.fire("Error", "Error al guardar registro: " + err.message, "error");
+  // Validar duración (servicios)
+  let duracion_min = null;
+  if (currentType === "servicios") {
+    if (!/^\d+$/.test(duracionStr)) {
+      showErrorToast("La duración debe ser un número válido.");
+      return;
+    }
+    duracion_min = parseInt(duracionStr);
+    if (duracion_min < 1 || duracion_min > 1440) {
+      showErrorToast("La duración debe estar entre 1 y 1440 minutos.");
+      return;
     }
   }
+
+  // Validar stock (productos)
+  let stock = null;
+  if (currentType === "productos") {
+    if (!/^\d+$/.test(stockStr)) {
+      showErrorToast("El stock debe ser un número válido.");
+      return;
+    }
+    stock = parseInt(stockStr);
+    if (stock < 0) {
+      showErrorToast("El stock no puede ser negativo.");
+      return;
+    }
+  }
+
+  try {
+    let imageUrl = "";
+
+    // Subir imagen si se seleccionó
+    if (fileInput.files.length > 0) {
+      imageUrl = await uploadImageToCloudinary(fileInput.files[0], currentType);
+    } else if (editingId) {
+      const existingItem = findItemById(currentType, editingId);
+      imageUrl = existingItem?.imgUrl || "";
+    }
+
+    if (fileInput.files.length > 0) {
+  imageUrl = await uploadImageToCloudinary(fileInput.files[0], currentType);
+} else if (editingId) {
+  const existingItem = findItemById(currentType, editingId);
+  imageUrl = existingItem?.imgUrl || "";
+}
+
+
+    // Construir objeto según el tipo
+    const data = { nombre, precio, imgUrl: imageUrl };
+    if (currentType === "paquetes") data.descripcion = descripcion;
+    if (currentType === "servicios") data.duracion_min = duracion_min;
+    if (currentType === "productos") data.stock = stock;
+
+    let response;
+    if (editingId) {
+      if (currentType === "servicios") response = await updateServicio(editingId, data);
+      else if (currentType === "paquetes") response = await updatePaquete(editingId, data);
+      else if (currentType === "productos") response = await updateProducto(editingId, data);
+    } else {
+      if (currentType === "servicios") response = await createServicio(data);
+      else if (currentType === "paquetes") response = await createPaquete(data);
+      else if (currentType === "productos") response = await createProducto(data);
+    }
+
+    if (response.ok) {
+      modal.classList.add("hidden");
+      document.body.style.overflow = '';
+      Swal.fire("Éxito", "Registro guardado correctamente", "success");
+      loadData(currentType);
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al guardar");
+    }
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Error al guardar registro: " + err.message, "error");
+  }
+}
+
 
   // Función de búsqueda
   function handleSearch(e) {
@@ -347,7 +413,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Funciones globales para los botones de editar y eliminar - CORREGIDAS
   window.editRegistro = (type, id) => {
-    console.log('Editando:', type, 'ID:', id);
     const data = findItemById(type, id);
     if (data) {
       openModal(data);
