@@ -101,3 +101,4 @@ export function renderIncomeChart(labels, data) {
 if (typeof lucide !== "undefined") {
   lucide.createIcons();
 }
+
