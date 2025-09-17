@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../assets/css/global.css" />
   <link rel="stylesheet" href="../assets/css/clientes.css" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gray-100 flex">
@@ -71,8 +72,8 @@
         <tr>
           <th class="px-6 py-3 text-left" scope="col">Nombre</th>
           <th class="px-6 py-3 text-left" scope="col">Correo</th>
-          <th class="px-6 py-3 text-left" scope="col">Teléfono</th>
-          <th class="px-6 py-3 text-left" scope="col">Estado</th>
+          <th class="px-6 py-3 text-left" scope="col">Direción</th>
+          <th class="px-6 py-3 text-left" scope="col">Contraseña</th>
           <th class="px-6 py-3 text-left" scope="col">Acciones</th>
         </tr>
       </thead>
@@ -98,52 +99,36 @@
       <h2 id="modalTitulo" class="text-xl font-semibold mb-4">Agregar Cliente</h2>
       <p id="modalDescripcion" class="sr-only">Formulario para agregar o editar cliente</p>
 
-      <div>
-        <label for="inputNombre" class="sr-only">Nombre completo</label>
-        <input id="inputNombre" type="text" placeholder="Nombre completo" class="p-2 border rounded w-full"
-          aria-describedby="errorNombre" />
-        <p id="errorNombre" class="text-red-600 text-sm mt-1 hidden" role="alert">El nombre debe tener al menos 3
-          caracteres.</p>
-      </div>
+<div>
+  <label for="inputNombre" class="sr-only">Nombre completo</label>
+  <input id="inputNombre" type="text" placeholder="Nombre completo" class="p-2 border rounded w-full" />
+  <p id="errorNombre" class="text-red-600 text-sm mt-1 hidden" role="alert"></p>
+</div>
 
-      <div class="relative">
-        <label for="inputCorreo" class="sr-only">Correo electrónico</label>
-        <input id="inputCorreo" type="email" placeholder="Correo electrónico" class="p-2 border rounded w-full pr-8"
-          aria-describedby="errorCorreo" />
-        <span id="iconCorreo" class="absolute right-2 top-2 text-green-600 hidden" aria-hidden="true">
-          ✔️
-        </span>
-        <p id="errorCorreo" class="text-red-600 text-sm mt-1 hidden" role="alert">Correo inválido.</p>
-      </div>
+<div>
+  <label for="inputCorreo" class="sr-only">Correo electrónico</label>
+  <input id="inputCorreo" type="email" placeholder="Correo electrónico" class="p-2 border rounded w-full" />
+  <p id="errorCorreo" class="text-red-600 text-sm mt-1 hidden" role="alert"></p>
+</div>
 
-      <div>
-        <label for="inputTelefono" class="sr-only">Teléfono</label>
-        <input id="inputTelefono" type="text" placeholder="Teléfono (solo números)" class="p-2 border rounded w-full"
-          aria-describedby="errorTelefono" />
-        <p id="errorTelefono" class="text-red-600 text-sm mt-1 hidden" role="alert">Teléfono debe contener entre 8 y 15
-          dígitos numéricos.</p>
-      </div>
+<div>
+  <label for="inputDireccion" class="sr-only">Dirección</label>
+  <input id="inputDireccion" type="text" placeholder="Dirección" class="p-2 border rounded w-full" />
+  <p id="errorDireccion" class="text-red-600 text-sm mt-1 hidden" role="alert"></p>
+</div>
 
-      <div>
-        <label for="inputNacimiento" class="sr-only">Fecha de nacimiento</label>
-        <input id="inputNacimiento" type="date" placeholder="Fecha de nacimiento" class="p-2 border rounded w-full" />
-      </div>
+<div>
+  <label for="inputContrasena" class="sr-only">Contraseña</label>
+  <div class="relative">
+    <input type="password" id="inputContrasena" class="password-field p-2 border rounded w-full" placeholder="Contraseña">
+    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 mt-1">
+      <i data-lucide="eye" class="h-5 w-5"></i>
+    </button>
+  </div>
+  <p id="errorContrasena" class="hidden text-red-600 text-sm mt-1"></p>
+</div>
 
-      <div>
-        <label for="inputDireccion" class="sr-only">Dirección</label>
-        <input id="inputDireccion" type="text" placeholder="Dirección" class="p-2 border rounded w-full" />
-      </div>
-
-      <div>
-        <label for="inputEstado" class="sr-only">Estado</label>
-        <select id="inputEstado" class="p-2 border rounded w-full" aria-describedby="errorEstado">
-          <option value="" disabled selected>Selecciona estado</option>
-          <option value="Activo">Activo</option>
-          <option value="Inactivo">Inactivo</option>
-        </select>
-        <p id="errorEstado" class="text-red-600 text-sm mt-1 hidden" role="alert">Debes seleccionar un estado válido.
-        </p>
-      </div>
+    
 
       <div class="flex justify-end gap-3 mt-4">
         <button id="btnCancelar" class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100 transition">
@@ -173,7 +158,8 @@
     aria-atomic="true"></div>
 
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="../assets/js/clientes.js"></script>
+  <script type="module" src="../assets/js/clientes.js"></script>
+  <script type="module" src="../assets/Controllers/ClientesController.js"></script>
   <script src="../assets/js/auth.js"></script>
 </body>
 

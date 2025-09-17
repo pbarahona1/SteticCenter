@@ -96,3 +96,22 @@ button:focus {
     box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
     outline: none;
 }
+
+
+#togglePassword:hover,
+#togglePassword:hover i {
+    color: #6b7280 !important; 
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+
+#togglePassword:hover {
+    transform: none !important;
+}
+
+#togglePassword {
+    color: #6b7280 !important; 
+}
+
