@@ -75,7 +75,7 @@
         <div class="bg-white p-4 rounded-xl shadow flex items-center justify-between">
           <div>
             <p class="text-sm text-gray-500">Citas Hoy</p>
-            <h2 class="text-xl font-bold" id="CitasHoy">0</h2>
+            <h2 class="text-xl font-bold" id="CitasHoy"></h2>
 
           </div>
           <i data-lucide="calendar" class="w-6 h-6 text-pink-500"></i>
@@ -84,7 +84,7 @@
       <div class="bg-white p-4 rounded-xl shadow flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-500">Ingresos</p>
-          <h2 class="text-xl font-bold" id="IngresosTotal">$0</h2>
+          <h2 class="text-xl font-bold" id="IngresosTotal"></h2>
 
         </div>
         <i data-lucide="dollar-sign" class="w-6 h-6 text-pink-500"></i>
@@ -104,25 +104,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="../assets/Controllers/DashboardController.js"></script>
   <script src="../assets/js/auth.js"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioSesion"));
-
-    if (!usuarioSesion) {
-      window.location.href = "Inicio-Sesion.html";
-      return;
-    }
-    const rol = usuarioSesion.rol;
-
-    if (rol === "Administrador") {
-      document.getElementById("IngresosTotal").style.display = "block";
-    } else if (rol === "Empleado") {
-      document.getElementById("IngresosTotal").style.display = "none" ;
-      document.getElementById("incomeChart").style.display = "none";
-    }
-  });
-</script>
-
 </body>
 
 </html>
