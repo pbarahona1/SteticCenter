@@ -1,154 +1,96 @@
-lucide.createIcons();
-const sidebar = document.querySelector("aside");
-const mainContent = document.querySelector(".main-content");
-sidebar.addEventListener("mouseenter", () => mainContent.classList.add("sidebar-open"));
-sidebar.addEventListener("mouseleave", () => mainContent.classList.remove("sidebar-open"));
+// services/citas.js
+const API_BASE_URL = 'http://localhost:8080';
 
-const tabla = document.getElementById("tablaCitas");
-const buscador = document.getElementById("buscadorCitas");
-const modal = document.getElementById("modalCita");
-const btnNueva = document.getElementById("btnNuevaCita");
-const btnGuardar = document.getElementById("btnGuardar");
-const btnCancelar = document.getElementById("btnCancelar");
-const modalTitulo = document.getElementById("modalTitulo");
-
-const inputCliente = document.getElementById("inputCliente");
-const inputServicio = document.getElementById("inputServicio");
-const inputFecha = document.getElementById("inputFecha");
-const inputHora = document.getElementById("inputHora");
-const inputEmpleado = document.getElementById("inputEmpleado");
-const inputEstado = document.getElementById("inputEstado");
-
-const toastContainer = document.getElementById("toastContainer");
-
-const serviciosSpa = ["Masaje relajante", "Facial hidratante", "Terapia con piedras calientes", "Exfoliación corporal", "Tratamiento anti-estrés"];
-const empleadosSpa = ["Laura", "Pedro", "Sofía", "Andrés", "María"];
-
-serviciosSpa.forEach(s => {
-  const opt = document.createElement("option");
-  opt.value = s;
-  opt.textContent = s;
-  inputServicio.appendChild(opt);
-});
-empleadosSpa.forEach(e => {
-  const opt = document.createElement("option");
-  opt.value = e;
-  opt.textContent = e;
-  inputEmpleado.appendChild(opt);
-});
-
-let citas = JSON.parse(localStorage.getItem("citas")) || [];
-let citaEditandoIndex = null;
-
-function mostrarToast(msg, tipo = "success") {
-  const colores = { success: "bg-green-500", error: "bg-red-500", info: "bg-blue-500" };
-  const toast = document.createElement("div");
-  toast.className = `${colores[tipo]} text-white px-4 py-2 rounded shadow toast`;
-  toast.textContent = msg;
-  toastContainer.appendChild(toast);
-  setTimeout(() => toast.remove(), 10000000);
-}
-
-function limpiarModal() {
-  inputCliente.value = "";
-  inputServicio.value = "";
-  inputFecha.value = "";
-  inputHora.value = "";
-  inputEmpleado.value = "";
-  inputEstado.value = "";
-}
-
-function renderizarTabla(filtro = "") {
-  tabla.innerHTML = "";
-  citas
-    .filter(c => c.cliente.toLowerCase().includes(filtro) || c.servicio.toLowerCase().includes(filtro) || c.empleado.toLowerCase().includes(filtro))
-    .forEach((cita, index) => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-            <td class="px-4 py-2">${cita.cliente}</td>
-            <td class="px-4 py-2">${cita.servicio}</td>
-            <td class="px-4 py-2">${cita.fecha}</td>
-            <td class="px-4 py-2">${cita.hora}</td>
-            <td class="px-4 py-2">${cita.empleado}</td>
-            <td class="px-4 py-2">${cita.estado}</td>
-            <td class="px-4 py-2 flex justify-center gap-2">
-              <button class="text-blue-600 hover:text-blue-800" onclick="editarCita(${index})"><i data-lucide="pencil"></i></button>
-              <button class="text-red-600 hover:text-red-800" onclick="eliminarCita(${index})"><i data-lucide="trash-2"></i></button>
-            </td>
-          `;
-      tabla.appendChild(fila);
-    });
-  lucide.createIcons();
-}
-
-function validarCampos() {
-  if (!inputCliente.value.trim() || !inputServicio.value || !inputFecha.value || !inputHora.value || !inputEmpleado.value || !inputEstado.value) {
-    mostrarToast("Todos los campos son obligatorios", "error");
-    return false;
+// Obtener todas las citas
+export const getCitas = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ApiCitas/GetCitas`);
+    if (!response.ok) throw new Error('Error al obtener citas');
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
   }
-  return true;
-}
-
-btnNueva.addEventListener("click", () => {
-  limpiarModal();
-  modalTitulo.textContent = "Agregar Cita";
-  citaEditandoIndex = null;
-  modal.classList.remove("hidden");
-});
-
-btnCancelar.addEventListener("click", () => modal.classList.add("hidden"));
-
-btnGuardar.addEventListener("click", () => {
-  if (!validarCampos()) return;
-  const nuevaCita = {
-    cliente: inputCliente.value.trim(),
-    servicio: inputServicio.value,
-    fecha: inputFecha.value,
-    hora: inputHora.value,
-    empleado: inputEmpleado.value,
-    estado: inputEstado.value
-  };
-  if (citaEditandoIndex === null) {
-    citas.push(nuevaCita);
-    mostrarToast("Cita agregada con éxito", "success");
-  } else {
-    citas[citaEditandoIndex] = nuevaCita;
-    mostrarToast("Cita actualizada", "info");
-  }
-  localStorage.setItem("citas", JSON.stringify(citas));
-  renderizarTabla();
-  modal.classList.add("hidden");
-});
-
-buscador.addEventListener("input", (e) => renderizarTabla(e.target.value.toLowerCase()));
-
-window.editarCita = (index) => {
-  const c = citas[index];
-  citaEditandoIndex = index;
-  modalTitulo.textContent = "Editar Cita";
-  inputCliente.value = c.cliente;
-  inputServicio.value = c.servicio;
-  inputFecha.value = c.fecha;
-  inputHora.value = c.hora;
-  inputEmpleado.value = c.empleado;
-  inputEstado.value = c.estado;
-  modal.classList.remove("hidden");
 };
 
-window.eliminarCita = (index) => {
-  citas.splice(index, 1);
-  localStorage.setItem("citas", JSON.stringify(citas));
-  renderizarTabla();
-  mostrarToast("Cita eliminada", "success");
+// Obtener citas paginadas
+export const getCitasPaginadas = async (page, size) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ApiCitas/GetCitasPaginadas?page=${page}&size=${size}`);
+    if (!response.ok) throw new Error('Error al obtener citas paginadas');
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 };
 
-renderizarTabla();
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('logoutBtn').addEventListener('click', function (e) {
-        e.preventDefault();
-        window.location.replace("inicio-sesion.html");
+// Crear cita
+export const createCita = async (citaData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ApiCitas/PostCitas`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(citaData),
     });
-});
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
 
+// Actualizar cita
+export const updateCita = async (id, citaData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ApiCitas/PutCitas/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(citaData),
+    });
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
 
+// Eliminar cita
+export const deleteCita = async (id) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ApiCitas/DeleteCitas/${id}`, {
+      method: 'DELETE',
+    });
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+// Obtener usuarios (empleados)
+export const getUsuarios = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/Usuario/GetUsers`);
+    if (!response.ok) throw new Error('Error al obtener usuarios');
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+export const getHorarios = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ApiHorario/GetHorario`);
+    if (!response.ok) throw new Error('Error al obtener horarios');
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};

@@ -314,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inputDireccion.value = cliente.direccion || "";
             inputContrasena.value = cliente.contrasenaCliente || ""; 
 
+
             limpiarErrores();
             modal.classList.remove("hidden");
             inputNombre.focus();
